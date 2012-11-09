@@ -85,7 +85,7 @@
 [format]
   pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
 [merge]
-  summary = true
+  summary = false
   verbosity = 1
 [apply]
   whitespace = nowarn
