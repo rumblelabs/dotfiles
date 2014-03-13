@@ -5,7 +5,8 @@ yadr=$HOME/.yadr
 
 # YADR support
 alias yav='yadr vim-add-plugin'
-alias yuv='yadr update-plugins' #FIXME: backwards compatibility. Kill me after Jan 1, 2013
+alias ydv='yadr vim-delete-plugin'
+alias ylv='yadr vim-list-plugin'
 alias yup='yadr update-plugins'
 alias yip='yadr init-plugins'
 
@@ -15,7 +16,6 @@ alias psg="ps aux | grep "
 alias psr='ps aux | grep ruby'
 
 # Moving around
-alias ..='cd ..'
 alias cdb='cd -'
 
 # Show human friendly numbers and colors
@@ -28,19 +28,21 @@ alias du='du -h -d 2'
 alias lsg='ll | grep'
 
 # Alias Editing
-alias ae='vi $yadr/zsh/aliases.zsh' #alias edit
+alias ae='vim $yadr/zsh/aliases.zsh' #alias edit
 alias ar='source $yadr/zsh/aliases.zsh'  #alias reload
 
 # vim using
-if [ "$(command -v brew)" ]; then
-  alias vim=$(brew ls macvim | grep Contents/MacOS/Vim)
+mvim --version > /dev/null 2>&1
+MACVIM_INSTALLED=$?
+if [ $MACVIM_INSTALLED -eq 0 ]; then
+  alias vim="mvim -v"
 fi
 
 # vimrc editing
-alias ve='vi ~/.vimrc'
+alias ve='vim ~/.vimrc'
 
 # zsh profile editing
-alias ze='vi ~/.zshrc'
+alias ze='vim ~/.zshrc'
 alias zr='source ~/.zshrc'
 
 # Git Aliases
@@ -52,7 +54,7 @@ alias gsa='git stash apply'
 alias gsh='git show'
 alias gshw='git show'
 alias gshow='git show'
-alias gi='vi .gitignore'
+alias gi='vim .gitignore'
 alias gcm='git ci -m'
 alias gcim='git ci -m'
 alias gci='git ci'
@@ -97,6 +99,8 @@ alias gsm='git submodule'
 alias gsmi='git submodule init'
 alias gsmu='git submodule update'
 alias gt='git t'
+alias gbg='git bisect good'
+alias gbb='git bisect bad'
 
 # Common shell functions
 alias less='less -r'
@@ -110,16 +114,12 @@ alias cl='clear'
 alias gz='tar -zcvf'
 
 # Ruby
-alias c='pry -r ./config/environment' # Rails 3
+alias c='rails c' # Rails 3
 alias co='script/console --irb=pry' # Rails 2
 alias ts='thin start'
 alias ms='mongrel_rails start'
 alias tfdl='tail -f log/development.log'
 alias tftl='tail -f log/test.log'
-
-# Vim/ctags "mctags = make ctags", using the ruby specific version
-# to save some time
-alias mctags=~/.bin/run_tags.rb #'/opt/local/bin/ctags -Rf ./tags *'
 
 alias ka9='killall -9'
 alias k9='kill -9'
@@ -144,3 +144,13 @@ alias zc='zeus console'
 
 # Rspec
 alias rs='rspec spec'
+alias sr='spring rspec'
+alias srgm='spring rails g migration'
+alias srdm='spring rake db:migrate'
+alias srdt='spring rake db:migrate'
+alias srdmt='spring rake db:migrate db:test:prepare'
+
+# Sprintly - https://github.com/nextbigsoundinc/Sprintly-GitHub
+alias sp='sprintly'
+# spb = sprintly branch - create a branch automatically based on the bug you're working on
+alias spb="git checkout -b \`sp | tail -2 | grep '#' | sed 's/^ //' | sed 's/[^A-Za-z0-9 ]//g' | sed 's/ /-/g' | cut -d"-" -f1,2,3,4,5\`"
